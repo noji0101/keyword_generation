@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css?family=Sawarabi+Gothic');
+
+html,
+body,
+.container,
+#content{
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0
+}
+
+header,
+body {
+    font-family: 'Sawarabi Gothic', sans-serif;
+}
+
+header,
+.container{
+    text-align: center;
+}
+
+.container{
+    height:88%
+}
+
+header{
+    text-align: center;
+    width: 320px;
+    height: 12%;
+    margin: 0 auto;
+}
+
+h1{
+    display: inline-block;
+    padding: 15px 10px;
+    margin: 6% auto 0 ;
+    border-top: solid 3px;
+    border-bottom: solid 3px;
+}
+
+p b{
+    font-size: 1.3rem;
+}
+
+
+div#loading {
+    width: 64px;
+    height: 64px;
+    margin: 200px auto 10px;
+    display: none;
+    background: url(/static/loading.gif) no-repeat;
+    cursor: wait;
+    }
+
+.button{
+    padding: 30px 0px 0px
+}
+
+.button form{
+    text-align: center;
+}
+
+#infer,
+#reinfer
+    {
+        display: none;
+    }
+
+
+.submit_btn{
+    display: block;
+    padding: 0.3em 1em;
+    margin: 3em auto; 
+    text-decoration: none;
+    color: #67c5ff;
+    border: solid 2px #67c5ff;
+    border-radius: 3px;
+    transition: .4s; 
+    cursor: pointer;
+    width:100px;
+}
+
+#reget_form{
+    vertical-align: middle;
+}
+
+.reget_btn{
+    display: inline-block;
+    padding: 0.7em 1.5em;
+    margin: auto 1em; 
+    text-decoration: none;
+    color: #67c5ff;
+    border: solid 2px #67c5ff;
+    border-radius: 3px;
+    transition: .4s; 
+    vertical-align: middle;
+    cursor: pointer;
+}
+.words2 {
+    display: inline-block;
+    vertical-align:  middle; 
+    margin: auto 2em 2em;
+}
+
+.words,
+.name {
+    display: inline-block;
+    margin: auto 2em;
+}
+
+.select_btn{
+    display: block;
+}
+
+.submit_btn:hover,
+.reget_btn:hover {
+    background: #67c5ff;
+    color: white;
+  }
+
+
+.top {
+    font-weight: bold;
+    text-decoration: none;
+    background: #67c5ff;
+    color:white;
+    padding:7px 10px;
+    border-radius: 20px;
+  }
+
+  .top:hover {
+    background: silver;
+    text-decoration: none;
+  }
+
+.p_top{
+    margin-top: 40px;
+}
+
+
+/* result */
+
+#result {
+    width: 100%;
+    max-width: 1200px;
+    margin: 30px auto 10px;
+    border: solid #000;
+}
+
+#add_word_box {
+    margin: 0 auto 20px;
+}
+
+ellipse:hover {
+    cursor: pointer;
+}
+
+
+@media screen and (min-width: 768px) {
+
+    .sp {
+        display: none;
+    }
+
+}
+
+
+@media screen and (max-width: 767px) {
+
+    .pc {
+        display: none;
+    }
+
+}

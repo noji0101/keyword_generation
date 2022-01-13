@@ -1,0 +1,7 @@
+numpy
+flask
+matplotlib
+pandas
+torch
+gensim
+nltk

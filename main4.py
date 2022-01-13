@@ -6,7 +6,7 @@ from word_extractor.lexemes_vector import get_most_similar_lexemes, get_verctor_
 from word_extractor.wordnet import get_hypernum, get_hyponym, get_not_similar_hyponym
 
 
-def extract_words_1(input_words, lexemes_dict, lexemes_list, mapping_dict):
+def extract_words_4(input_words, lexemes_dict, lexemes_list, mapping_dict):
     """フローチャート通りに単語を抽出する関数
 
     Args:

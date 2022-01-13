@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div id="loading"></div>
+<div id="content">
+
+    {% if not extracted_words %}
+    <h2>Input words</h2>
+    <div class="button">
+        <form method="post" action="/send" enctype="multipart/form-data">
+            <div class="words">
+                <p><b>words</b></p>
+                <label class="select_btn"><input type="text" name="words" required size="10"></label>
+                <label class="select_btn"><input type="text" name="words" required size="10"></label>
+                <label class="select_btn"><input type="text" name="words" required size="10"></label>
+                <label class="select_btn"><input type="text" name="words" required size="10"></label>
+            </div>
+            <div class="name">
+                <p>
+                    <b>name</b><br>
+                    {fast name}_{first name}<br>
+                    ※全て小文字<br>
+                    (例: 山田太郎→yamada_taro)
+                </p>
+                <label class="select_btn"><input type="text" name="name" required size="10"></label>
+            </div>
+            <label class="submit_btn"><input type="submit" id="infer" onclick="loading();">get words</label>
+        </form>
+    </div>
+    {% endif %}
+    {% if extracted_words %}
+    <div id='result'>
+    </div>
+    <!-- <div id='add_word_box'>
+        <label class="input_btns"><input type="text" id="add_word" name="add_word" required size="10"></label>
+        <label class="submit_btn"><input id="reinfer" type="button" onclick="add_node()"/>add word</label>
+    </div> -->
+    <form id='reget_form' method="post" action="/send" enctype="multipart/form-data">
+        <div class="words2">
+            <p><b>reinput words</b></p>
+            <label class="select_btn"><input type="text" name="words" required size="10"></label>
+            <label class="select_btn"><input type="text" name="words" required size="10"></label>
+            <label class="select_btn"><input type="text" name="words" required size="10"></label>
+            <label class="select_btn"><input type="text" name="words" required size="10"></label>
+        </div>
+        <label class="reget_btn"><input id="reinfer" type="button" onclick="reinfer_func()"/>reget words</label>
+    </form>
+
+
+    {% endif %}
+</div>
+
+{% if extracted_words %}
+<script>
+    window.onload = function() {
+    main({{ extracted_words | tojson }}, {{ links | tojson }})
+    }
+</script>
+{% endif %}
+
+{% endblock %}
+

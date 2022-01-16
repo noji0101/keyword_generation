@@ -6,7 +6,7 @@ from nltk.corpus import wordnet
 nltk.download("wordnet")
 from scipy.spatial import distance
 
-from word_extractor.lexemes_vector import get_key_from_value, get_verctor_from_word
+from word_extractor.lexemes_vector import AutoextendExtractor
 
 ############ TODO 概念を単語で取り出すのではなく，概念の語彙素を持ってくるようにする→してた？
 
@@ -49,11 +49,11 @@ def get_hyponym(word, idx=0):
         hyponym_lexemes = hyponym.lemmas()[0].key()[:-10]
         return hyponym_lexemes, sense_key
 
-def get_not_similar_hyponym(input_word, lexemes_dict, mapping_dict, idx=0):
+def get_not_similar_hyponym(input_word, autoextend: AutoextendExtractor, idx=0):
     '''
     下位の中で，語義ベクトルの類似度が低い単語の抽出
     '''
-    input_word_vector = get_verctor_from_word(input_word, lexemes_dict, mapping_dict)
+    input_word_vector = autoextend.get_verctor_from_word(input_word)
     if input_word_vector is not None:
         synsets = wordnet.synsets(input_word)
         try:
@@ -71,13 +71,13 @@ def get_not_similar_hyponym(input_word, lexemes_dict, mapping_dict, idx=0):
             return None, None
         else:
             sense_keys = [hyponym.lemmas()[0].key() for hyponym in hyponyms]
-            vectors_keys = [get_key_from_value(mapping_dict, sense_key) for sense_key in sense_keys]
+            vectors_keys = [autoextend.get_key_from_value(autoextend.mapping_dict, sense_key) for sense_key in sense_keys]
             words = [sense_key[:-10] for sense_key in sense_keys]
             lexemes_vectors = []
             words_not_none = []
             for vector_key, word in zip(vectors_keys, words):
                 try:
-                    lexemes_vectors.append(lexemes_dict[f'{word}-{vector_key}'])
+                    lexemes_vectors.append(autoextend.lexemes_dict[f'{word}-{vector_key}'])
                     words_not_none.append(word)
                 except (KeyError, ValueError):
                     # print('skipped')

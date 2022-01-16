@@ -7,7 +7,7 @@
     {% if not extracted_words %}
     <h2>Input words</h2>
     <div class="button">
-        <form method="post" action="/send" enctype="multipart/form-data">
+        <form name='get_form' method="post" action="/send" enctype="multipart/form-data" onsubmit="return loading()">
             <div class="words">
                 <p><b>words</b></p>
                 <label class="select_btn"><input type="text" name="words" required size="10"></label>
@@ -24,7 +24,7 @@
                 </p>
                 <label class="select_btn"><input type="text" name="name" required size="10"></label>
             </div>
-            <label class="submit_btn"><input type="submit" id="infer" onclick="loading();">get words</label>
+            <label class="submit_btn"><input type="submit" id="infer" onclick="loading1();">get words</label>
         </form>
     </div>
     {% endif %}
@@ -35,7 +35,7 @@
         <label class="input_btns"><input type="text" id="add_word" name="add_word" required size="10"></label>
         <label class="submit_btn"><input id="reinfer" type="button" onclick="add_node()"/>add word</label>
     </div> -->
-    <form id='reget_form' method="post" action="/send" enctype="multipart/form-data">
+    <form name='reget_form' method="post" action="/send" enctype="multipart/form-data" onsubmit="return loading()">
         <div class="words2">
             <p><b>reinput words</b></p>
             <label class="select_btn"><input type="text" name="words" required size="10"></label>
@@ -45,7 +45,14 @@
         </div>
         <label class="reget_btn"><input id="reinfer" type="button" onclick="reinfer_func()"/>reget words</label>
     </form>
-
+        {% if selected_words_log %}
+        <div id='word_list'>
+            <h2>words you selected</h2>
+            {% for word in selected_words_log %}
+                <div class='word_box'>{{ word }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
 
     {% endif %}
 </div>

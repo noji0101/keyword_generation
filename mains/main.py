@@ -2,11 +2,11 @@ import itertools
 import numpy as np
 import random
 
-from word_extractor.lexemes_vector import get_most_similar_lexemes, get_verctor_from_word, get_verctor_from_sense_key, get_word_from_vector, get_analogy
+from word_extractor.lexemes_vector import AutoextendExtractor
 from word_extractor.wordnet import get_hypernum, get_hyponym, get_not_similar_hyponym
 
 
-def extract_words_1(input_words, lexemes_dict, lexemes_list, mapping_dict):
+def extract_words_1(input_words, autoextend: AutoextendExtractor):
     """フローチャート通りに単語を抽出する関数
 
     Args:
@@ -41,8 +41,15 @@ def extract_words_1(input_words, lexemes_dict, lexemes_list, mapping_dict):
         # 抽出
         word1, _ = get_hypernum(input_word)
         word2, _ = get_hyponym(input_word)
-        word3, _ = get_not_similar_hyponym(input_word, lexemes_dict, mapping_dict)
-        word4, _ = get_most_similar_lexemes(input_word, lexemes_dict, lexemes_list, mapping_dict)
+        word3, _ = get_not_similar_hyponym(input_word, autoextend)
+        output_lexemes = autoextend.get_most_similar_lexemes(input_word, num_word=3)
+        if output_lexemes is not None:
+            word4, _ = output_lexemes[0]
+            word5, _ = output_lexemes[1]
+            word6, _ = output_lexemes[2]
+            
+        else:
+            word4 = None
         print(word1, word2, word3, word4)
         for word in [word1, word2, word3, word4]:
             word_histries.append(word)
@@ -68,7 +75,7 @@ def extract_words_1(input_words, lexemes_dict, lexemes_list, mapping_dict):
         input_word, word1, word2, word3, word4 = word_histries[5*idx:5*idx+5]
         for i, word in enumerate([word1, word4]):
             # 類推の計算
-            output_word = get_analogy(input_word, word3, word, lexemes_dict, lexemes_list, mapping_dict)
+            output_word = autoextend.get_analogy(input_word, word3, word)
             wordlist = [word_dic.get('label') for word_dic in extracted_words]
             if (not output_word in wordlist) and (output_word is not None):
                 id_output = len(extracted_words)
@@ -92,7 +99,7 @@ def extract_words_1(input_words, lexemes_dict, lexemes_list, mapping_dict):
         
         for word in [input_word_idx2, word1_idx2, word2_idx2, word3_idx2, word4_idx2]:
             
-            output_word = get_analogy(input_word_idx1, word2_idx1, word, lexemes_dict, lexemes_list, mapping_dict)
+            output_word = autoextend.get_analogy(input_word_idx1, word2_idx1, word)
             wordlist = [word_dic.get('label') for word_dic in extracted_words]
             if (not output_word in wordlist) and (output_word is not None):
                 id_output = len(extracted_words)

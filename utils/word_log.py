@@ -20,8 +20,16 @@ def word_log(extracted_words, count, selected_ids, filename, experiment_number, 
     if count == 1:
         # 名前をつけてcsvを保存
         log_df.to_csv(log_file_path, index=False)
+        
+        # ログを返す
+        selected_words_log = log_df[log_df['is_selected'] == True]['label'].to_list()
+        return selected_words_log
     else:
         # 保存されたcsvに，データを追加
         previous_log_df = pd.read_csv(log_file_path)
         new_log_df = pd.concat([previous_log_df, log_df]).reset_index().drop('index', axis=1)
         new_log_df.to_csv(log_file_path, index=False)
+
+        selected_words_log = new_log_df[new_log_df['is_selected'] == True]['label'].to_list()
+        return selected_words_log
+

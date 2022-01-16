@@ -6,7 +6,7 @@ function main(extracted_words, edges){
 
 function display_words(nodes, links){
     width = 1200;
-    height = 550;
+    height = 800;
 
     selected_words = []
 
@@ -169,33 +169,72 @@ function dragended(d) {
 
 function reinfer_func(){
 
-    loading();
-
-    // 選択された単語とそのIDの送信
-    var form = document.getElementById('reget_form')
-    // form.method = 'POST';
-    // form.action = '/send';
-    
-    for (idx in selected_words){
-        // var request1 = document.createElement('input');
-        // request1.type = 'hidden'; //入力フォームが表示されないように
-        // request1.name = 'words';
-        // request1.value = selected_words[idx];
-        // form.appendChild(request1);
-        // document.body.appendChild(form);
-
-        var request2 = document.createElement('input'); 
-        request2.type = 'hidden'; //入力フォームが表示されないように
-        request2.name = 'ids';
-        request2.value = selected_ids[idx];
-        form.appendChild(request2);
-        // document.body.appendChild(form);
+    var is_full = true
+    console.log(is_full)
+    for (idx in [0, 1, 2, 3]){
+        if (document.forms[0].elements['words'][idx].value == ''){
+            is_full = false
+        }
     }
 
-    form.submit();
+    if (is_full){
+        $("#loading").show();
+        $("#content").hide();   
+
+        // 選択された単語とそのIDの送信
+        var form = document.reget_form
+        // form.method = 'POST';
+        // form.action = '/send';
+        
+        for (idx in selected_words){
+            // var request1 = document.createElement('input');
+            // request1.type = 'hidden'; //入力フォームが表示されないように
+            // request1.name = 'words';
+            // request1.value = selected_words[idx];
+            // form.appendChild(request1);
+            // document.body.appendChild(form);
+
+            var request2 = document.createElement('input'); 
+            request2.type = 'hidden'; //入力フォームが表示されないように
+            request2.name = 'ids';
+            request2.value = selected_ids[idx];
+            form.appendChild(request2);
+            // document.body.appendChild(form);
+        }
+
+        form.submit();
+
+        return true
+    }else{
+        alert('全てのフィールドに入力してください')
+        return false
+    }
+
+
 }
 
-function loading(){
+
+function loading1(){
+    var is_full = true
+    for (idx in [0, 1, 2, 3]){
+        if (document.forms[0].elements['words'][idx].value == ''){
+            is_full = false
+        }
+    }
+    if (document.forms[0].elements['name'].value == ''){
+        is_full = false
+    }
+    if (is_full){
+        $("#loading").show();
+        $("#content").hide();   
+        return true
+    }else{
+        alert('全てのフィールドに入力してください')
+        return false
+    }
+}
+
+function loading2(){
     $("#loading").show();
     $("#content").hide();    
 }

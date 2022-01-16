@@ -11,11 +11,11 @@ import gensim
 current_dir = pathlib.Path(__file__).resolve().parent
 sys.path.append( str(current_dir) + '/../' )
 
-from main import extract_words_1
-from main2 import extract_words_2
-from main3 import extract_words_3
-from main4 import extract_words_4
-from utils.dataloader import read_lexemes_dict_and_list, read_mapping
+from mains.main import extract_words_1
+from mains.main2 import extract_words_2
+from mains.main3 import extract_words_3
+from mains.main4 import extract_words_4
+from word_extractor.lexemes_vector import AutoextendExtractor
 from utils.word_log import word_log
 
 app = Flask(__name__)
@@ -23,6 +23,7 @@ app = Flask(__name__)
 UPLOAD_FOLDER = './app/static/uploads'
 lexemes_filepath = './data/lexemes.txt'
 mapping_filepath = './data/mapping.txt'
+word2vec_filepath = './data/GoogleNews-vectors-negative300.bin'
 app.secret_key = 'count'
 app.secret_key = 'date'
 app.secret_key = 'subject_name'
@@ -37,6 +38,8 @@ def index():
 @app.route('/send', methods=['GET', 'POST'])
 def send():
     if request.method == 'POST':
+        selected_words_log = None
+
         # ログの保存
         if session['count'] == 0:
             session['subject_name'] = request.form.getlist('name')[0]
@@ -48,20 +51,23 @@ def send():
             file_name = session['date'] + '_' + session['subject_name']
             experiment_number = app.config['experiment_number']
             condition_number = app.config['condition_number']
-            word_log(previous_extracted_words, session['count'], selected_ids, file_name, experiment_number, condition_number)
+            selected_words_log = word_log(previous_extracted_words, session['count'], selected_ids, file_name, experiment_number, condition_number)
 
         session['count'] += 1
         print(session['count'], '回目')
 
         input_words = request.form.getlist('words')
         print('\n### extracting words ###\n')
-        extract_words = choose_method(app.config['condition_number'])
-        extracted_words, links = extract_words(input_words, lexemes_dict, lexemes_list, mapping_dict)
+        if app.config['condition_number'] == 1:
+            extracted_words, links = extract_words_1(input_words, autoextend)
+        elif app.config['condition_number'] == 2:
+            extracted_words, links = extract_words_2(input_words, word2vec)
         # extracted_wordsの更新
         session['extracted_words'] = extracted_words
         print('\n### extracting compleded ###\n')
 
-        return render_template('index.html', extracted_words=extracted_words, links=links) 
+
+        return render_template('index.html', extracted_words=extracted_words, links=links, selected_words_log=selected_words_log) 
     else:
         return redirect(url_for('index'))
 
@@ -85,11 +91,19 @@ def parser():
 
 
 if __name__ == '__main__':
-    print('\n### load dict ... ###\n')
-    lexemes_dict, lexemes_list = read_lexemes_dict_and_list(lexemes_filepath)
-    mapping_dict = read_mapping(mapping_filepath)
-    print('\n### loading compleded ###\n')
     args = parser()
-    app.config['condition_number'] = args.condition_number
+    condition_number = args.condition_number
+    app.config['condition_number'] = condition_number
     app.config['experiment_number'] = args.experiment_number
+
+    if condition_number == 1:
+        print('\n### load AutoExtend ... ###\n')
+        autoextend = AutoextendExtractor(lexemes_filepath, mapping_filepath)
+    elif condition_number == 2:
+        print('\n### load Word2vec ... ###\n')
+        word2vec = gensim.models.KeyedVectors.load_word2vec_format(word2vec_filepath, binary=True)
+    else:
+        raise Exception('input valid condition number')
+    print('\n### loading compleded ###\n')
+
     app.run(host="0.0.0.0", port=args.port, debug=True, threaded=True)

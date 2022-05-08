@@ -8,8 +8,6 @@ from scipy.spatial import distance
 
 from word_extractor.lexemes_vector import AutoextendExtractor
 
-############ TODO 概念を単語で取り出すのではなく，概念の語彙素を持ってくるようにする→してた？
-
 
 def get_hypernum(word, idx=0, distance=1):
     synsets = wordnet.synsets(word)

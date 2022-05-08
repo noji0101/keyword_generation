@@ -41,11 +41,10 @@ class AutoextendExtractor():
                     if output_lexeme in sense_key_temp.lower():
                         output_sense_key = sense_key_temp
                 output_lexemes.append([output_lexeme, output_sense_key])
-                return output_lexemes
-            else:
-                return most_similar_lexemes
+            return output_lexemes
         else:
-            return None
+            output = [[None, None] for _ in range(num_word)]
+            return output
 
     def get_verctor_from_word(self, word, synset_idx=0):
         try:

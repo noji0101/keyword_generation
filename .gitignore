@@ -2,3 +2,5 @@ data
 unused
 log
 __pycache__
+*.ipynb
+result

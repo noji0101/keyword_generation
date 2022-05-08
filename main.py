@@ -7,7 +7,7 @@ from word_extractor.wordnet import get_hypernum, get_hyponym, get_not_similar_hy
 
 
 def extract_words_1(input_words, autoextend: AutoextendExtractor):
-    """フローチャート通りに単語を抽出する関数
+    """
 
     Args:
         extracted_words ([type]): [description]
@@ -43,21 +43,18 @@ def extract_words_1(input_words, autoextend: AutoextendExtractor):
         word2, _ = get_hyponym(input_word)
         word3, _ = get_not_similar_hyponym(input_word, autoextend)
         output_lexemes = autoextend.get_most_similar_lexemes(input_word, num_word=3)
-        if output_lexemes is not None:
-            word4, _ = output_lexemes[0]
-            word5, _ = output_lexemes[1]
-            word6, _ = output_lexemes[2]
-            
-        else:
-            word4 = None
-        print(word1, word2, word3, word4)
+        print(output_lexemes)
+        word4, _ = output_lexemes[0]
+        word5, _ = output_lexemes[1]
+        word6, _ = output_lexemes[2]
+        print(word1, word2, word3, word4, word5, word6)
         for word in [word1, word2, word3, word4]:
             word_histries.append(word)
         word_histries_2.append([input_word, word1, word2, word3, word4])
 
         # エッジを定義
         count = 0
-        for i, output_word in enumerate([word1, word2, word3, word4]):
+        for i, output_word in enumerate([word1, word2, word3, word4]):# ここにたすだけだとリンクが壊れる
             if output_word is None:
                 # print('Got None')
                 pass

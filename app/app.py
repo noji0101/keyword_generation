@@ -11,7 +11,7 @@ import gensim
 current_dir = pathlib.Path(__file__).resolve().parent
 sys.path.append( str(current_dir) + '/../' )
 
-from mains.main import extract_words_1
+from main import extract_words_1
 from mains.main2 import extract_words_2
 from mains.main3 import extract_words_3
 from mains.main4 import extract_words_4
